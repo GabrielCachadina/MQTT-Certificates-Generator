@@ -187,6 +187,15 @@ test_mqtt() {
     exit 1
   fi
 
+  # Read stored server host or fallback to first local IP
+  SERVER_HOST_FILE="${SERVER_DIR}/host.info"
+  if [[ -f "$SERVER_HOST_FILE" && -s "$SERVER_HOST_FILE" ]]; then
+    SERVER_HOST=$(cat "$SERVER_HOST_FILE")
+  else
+    SERVER_HOST=$(hostname -I | awk '{print $1}')
+    echo "No host info found. Using local IP: $SERVER_HOST"
+  fi
+
   # Prompt user to enter password
   echo "Enter password for ${CLIENT}:"
   read -s PASSWORD
@@ -208,7 +217,7 @@ test_mqtt() {
     --cafile ${CLIENT_DIR}/ca.crt \
     --cert ${CLIENT_DIR}/client.crt \
     --key ${CLIENT_DIR}/client.key \
-    -h 192.168.0.28 \
+    -h ${SERVER_HOST} \
     -p 8883 \
     -u ${CLIENT} \
     -P ${PASSWORD} \

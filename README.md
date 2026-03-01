@@ -49,4 +49,4 @@ topic read test/#
 ```
 
 ### Test MQTT
-Select a Project and a client to either Publish or Subscribe to a topic.
+Select a project and a client to either Publish or Subscribe to a topic.
